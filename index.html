@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HydrateDifferent — The bottle that thinks cold</title>
+  <meta name="description" content="HydrateDifferent: a triple-wall insulated water bottle with a glow-reminder cap. 36 hours cold, 100% leakproof, made from recycled steel." />
+  <meta name="theme-color" content="#06121f" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 4C22 22 14 32 14 42a18 18 0 0 0 36 0C50 32 42 22 32 4z' fill='%235ef2d6'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script type="importmap">
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
+  <div class="progress" aria-hidden="true"></div>
+
+  <!-- Fixed 3D stage: the bottle travels with the story -->
+  <div class="stage" aria-hidden="true">
+    <canvas id="bottle-canvas"></canvas>
+    <svg class="stage__fallback" viewBox="0 0 200 520" role="img">
+      <defs>
+        <linearGradient id="fb" x1="0" x2="1">
+          <stop offset="0" stop-color="#2fb7a6" /><stop offset=".45" stop-color="#9ff7ea" /><stop offset="1" stop-color="#1f8f82" />
+        </linearGradient>
+      </defs>
+      <rect x="70" y="10" width="60" height="70" rx="14" fill="#0f2236" />
+      <path d="M62 80h76c12 30 28 40 28 80v300a40 40 0 0 1-40 40H74a40 40 0 0 1-40-40V160c0-40 16-50 28-80z" fill="url(#fb)" />
+    </svg>
+  </div>
+
+  <header class="nav" id="top">
+    <a href="#top" class="nav__logo" aria-label="HydrateDifferent home">
+      <svg viewBox="0 0 64 64" width="26" height="26" aria-hidden="true"><path d="M32 4C22 22 14 32 14 42a18 18 0 0 0 36 0C50 32 42 22 32 4z" fill="currentColor"/></svg>
+      <span>Hydrate<b>Different</b></span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav__links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#impact">Impact</a></li>
+        <li><a href="#shop">Colors</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <a href="#shop" class="btn btn--small magnetic" data-cursor="Shop">Shop now</a>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__content">
+        <p class="eyebrow reveal">New · Series 01</p>
+        <h1 id="hero-title" class="hero__title">
+          <span class="line"><span>Don't just</span></span>
+          <span class="line"><span>drink water.</span></span>
+          <span class="line"><span class="accent">Hydrate</span></span>
+          <span class="line"><span class="accent">different.</span></span>
+        </h1>
+        <p class="hero__sub reveal">Triple-wall insulated. A cap that glows when you forget to drink. Built from 100% recycled steel to outlast every bottle you've lost.</p>
+        <div class="hero__cta reveal">
+          <a href="#shop" class="btn magnetic" data-cursor="Pick">Pick your color — $39</a>
+          <a href="#features" class="btn btn--ghost" data-cursor="Look">See inside</a>
+        </div>
+        <ul class="hero__chips reveal" aria-label="Highlights">
+          <li>36h cold</li><li>18h hot</li><li>Leakproof</li><li>Lifetime warranty</li>
+        </ul>
+      </div>
+      <div class="scroll-hint" aria-hidden="true"><span></span>Scroll</div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Stay cold</span><i>✦</i><span>Glow reminders</span><i>✦</i><span>Zero plastic taste</span><i>✦</i><span>Fits every cup holder</span><i>✦</i>
+        <span>Stay cold</span><i>✦</i><span>Glow reminders</span><i>✦</i><span>Zero plastic taste</span><i>✦</i><span>Fits every cup holder</span><i>✦</i>
+      </div>
+    </div>
+
+    <!-- FEATURES (pinned scrollytelling) -->
+    <section class="features" id="features" aria-labelledby="features-title">
+      <div class="features__pin">
+        <div class="features__intro">
+          <p class="eyebrow">What's different</p>
+          <h2 id="features-title">Four ideas.<br/>One bottle.</h2>
+          <div class="features__dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        </div>
+        <ol class="features__list">
+          <li class="feature">
+            <span class="feature__num">01</span>
+            <h3>Triple-wall cold core</h3>
+            <p>A vacuum layer, a copper lining and an air gap keep ice frozen for 36 hours. Coffee stays hot for 18.</p>
+          </li>
+          <li class="feature">
+            <span class="feature__num">02</span>
+            <h3>The GlowCap</h3>
+            <p>A soft ring of light in the lid pulses when it's been too long since your last sip. No app needed. Charges via USB-C once a month.</p>
+          </li>
+          <li class="feature">
+            <span class="feature__num">03</span>
+            <h3>One-twist leakproof</h3>
+            <p>Throw it in your bag upside down. A silicone double seal and a quarter-turn lock mean nothing escapes.</p>
+          </li>
+          <li class="feature">
+            <span class="feature__num">04</span>
+            <h3>Built from what we throw away</h3>
+            <p>Every bottle is made from 100% recycled 18/8 stainless steel, with a powder coat that won't chip. Covered for life.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- IMPACT -->
+    <section class="impact" id="impact" aria-labelledby="impact-title">
+      <div class="container">
+        <p class="eyebrow reveal">Why it matters</p>
+        <h2 id="impact-title" class="reveal">One bottle replaces a mountain of plastic.</h2>
+        <div class="stats">
+          <div class="stat reveal">
+            <span class="stat__num" data-count="1460">0</span>
+            <span class="stat__label">plastic bottles one person can skip in 4 years</span>
+          </div>
+          <div class="stat reveal">
+            <span class="stat__num" data-count="36" data-suffix="h">0</span>
+            <span class="stat__label">ice-cold, tested at 30°C room temperature</span>
+          </div>
+          <div class="stat reveal">
+            <span class="stat__num" data-count="100" data-suffix="%">0</span>
+            <span class="stat__label">recycled steel in every body</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SHOP / COLORWAYS -->
+    <section class="shop" id="shop" aria-labelledby="shop-title">
+      <div class="shop__grid">
+        <div class="shop__spacer" aria-hidden="true"></div>
+        <div class="shop__panel">
+          <p class="eyebrow">Make it yours</p>
+          <h2 id="shop-title">Choose your <span class="accent" id="color-name">Glacier</span></h2>
+
+          <fieldset class="swatches">
+            <legend>Color</legend>
+            <label class="swatch" style="--c:#6fe0d0"><input type="radio" name="color" value="Glacier" data-hex="#6fe0d0" checked /><span></span><em>Glacier</em></label>
+            <label class="swatch" style="--c:#ff6b4a"><input type="radio" name="color" value="Ember" data-hex="#ff6b4a" /><span></span><em>Ember</em></label>
+            <label class="swatch" style="--c:#24345c"><input type="radio" name="color" value="Midnight" data-hex="#24345c" /><span></span><em>Midnight</em></label>
+            <label class="swatch" style="--c:#8aa667"><input type="radio" name="color" value="Moss" data-hex="#8aa667" /><span></span><em>Moss</em></label>
+            <label class="swatch" style="--c:#eadbc4"><input type="radio" name="color" value="Dune" data-hex="#eadbc4" /><span></span><em>Dune</em></label>
+          </fieldset>
+
+          <fieldset class="sizes">
+            <legend>Size</legend>
+            <label><input type="radio" name="size" value="500 ml" data-price="34" /><span>500 ml<small>17 oz</small></span></label>
+            <label><input type="radio" name="size" value="750 ml" data-price="39" checked /><span>750 ml<small>25 oz</small></span></label>
+            <label><input type="radio" name="size" value="1 L" data-price="44" /><span>1 L<small>34 oz</small></span></label>
+          </fieldset>
+
+          <div class="shop__buy">
+            <p class="price"><span id="price">$39</span><small>Free shipping · 60-day returns</small></p>
+            <button class="btn magnetic" id="add-to-cart" data-cursor="Add">Add to bag</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUOTES -->
+    <section class="quotes" aria-label="What people say">
+      <div class="container quotes__grid">
+        <figure class="quote reveal">
+          <blockquote>"The glowing cap is weirdly effective. I drink twice as much as I used to."</blockquote>
+          <figcaption>— Early tester, product designer</figcaption>
+        </figure>
+        <figure class="quote reveal">
+          <blockquote>"Left it in a hot car all afternoon. Ice still rattling at dinner."</blockquote>
+          <figcaption>— Early tester, trail runner</figcaption>
+        </figure>
+        <figure class="quote reveal">
+          <blockquote>"Finally a bottle that doesn't leak all over my laptop."</blockquote>
+          <figcaption>— Early tester, student</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="container container--narrow">
+        <h2 id="faq-title" class="reveal">Questions, answered.</h2>
+        <details class="reveal"><summary>Is it dishwasher safe?</summary><p>The body is top-rack safe. Hand-wash the GlowCap — it's sealed, but gentle is better for electronics.</p></details>
+        <details class="reveal"><summary>How long does the GlowCap battery last?</summary><p>About 30 days per charge with default reminders. Charge it with any USB-C cable in about an hour.</p></details>
+        <details class="reveal"><summary>Can I turn the reminders off?</summary><p>Yes. Hold the cap button for three seconds to switch to plain-cap mode. Hold again to turn the glow back on.</p></details>
+        <details class="reveal"><summary>What does the lifetime warranty cover?</summary><p>Insulation failure, leaks and manufacturing defects — for as long as you own it. Dents from adventures are badges of honor.</p></details>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" aria-labelledby="cta-title">
+      <div class="container">
+        <h2 id="cta-title" class="cta__title reveal">Ready to hydrate <span class="accent">different?</span></h2>
+        <form class="signup reveal" id="signup" novalidate>
+          <label for="email" class="sr-only">Email address</label>
+          <input id="email" type="email" name="email" placeholder="you@email.com" autocomplete="email" required />
+          <button class="btn" type="submit">Get 10% off</button>
+        </form>
+        <p class="signup__msg" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="nav__logo"><span>Hydrate<b>Different</b></span></span>
+      <p>© <span id="year"></span> HydrateDifferent. Drink more, waste less.</p>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
