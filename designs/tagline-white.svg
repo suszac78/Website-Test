@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+<g font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" font-style="italic" fill="#ffffff" text-anchor="start">
+<text x="20" y="64" font-size="58" letter-spacing="-1">DAWN</text>
+<text x="60" y="118" font-size="58" letter-spacing="-1">TILL</text>
+<text x="100" y="172" font-size="58" letter-spacing="-1">DARK</text></g>
+<rect x="20" y="132" width="70" height="8" fill="#ff5a1f" transform="skewX(-20)"/>
+</svg>

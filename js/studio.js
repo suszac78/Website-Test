@@ -4,15 +4,15 @@
   const { $, $$ } = HD;
 
   const defaults = {
-    hoodie: { placement: { scale: 0.9, x: 0, y: 0 }, price: 72, colors: ["black"] },
-    tee: { placement: { scale: 0.9, x: 0, y: 0 }, price: 36, colors: ["bone"] },
-    pants: { placement: { scale: 1, x: 0, y: 0 }, price: 68, colors: ["black"] },
+    hoodie: { placement: { scale: 0.9, x: 0, y: -0.05 }, price: 75 },
+    tee: { placement: { scale: 0.9, x: 0, y: -0.1 }, price: 35 },
+    pants: { placement: { scale: 1, x: 0, y: 0 }, price: 70 },
   };
   const MAX_PX = 1600;
   const MAX_MB = 15;
 
   const state = {
-    image: "", fileName: "", type: "hoodie",
+    image: "", original: "", knockout: false, lightImage: "", invert: false, fileName: "", type: "hoodie",
     colors: ["black"], previewColor: "black",
     placement: { ...defaults.hoodie.placement },
     view: "full", editingId: null, priceTouched: false,
@@ -46,6 +46,111 @@
     });
   }
 
+  // load an image and return its pixels on a canvas
+  function toCanvas(dataURL) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const w = img.naturalWidth || 1200, h = img.naturalHeight || 1200;
+        const k = Math.min(1, MAX_PX / Math.max(w, h));
+        const c = document.createElement("canvas");
+        c.width = Math.round(w * k); c.height = Math.round(h * k);
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+        resolve(c);
+      };
+      img.onerror = reject;
+      img.src = dataURL;
+    });
+  }
+
+  // black copy of the design (keeps transparency) for light fabrics
+  async function makeDark(dataURL) {
+    const c = await toCanvas(dataURL);
+    const ctx = c.getContext("2d");
+    const d = ctx.getImageData(0, 0, c.width, c.height);
+    for (let i = 0; i < d.data.length; i += 4) { d.data[i] = 14; d.data[i + 1] = 14; d.data[i + 2] = 16; }
+    ctx.putImageData(d, 0, 0);
+    return c.toDataURL("image/png");
+  }
+
+  // is the design mostly white? (then it needs a dark version on light fabric)
+  async function isMostlyLight(dataURL) {
+    try {
+      const c = await toCanvas(dataURL);
+      const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data;
+      let sum = 0, n = 0;
+      for (let i = 0; i < d.length; i += 16) if (d[i + 3] > 128) { sum += (0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2]) / 255; n++; }
+      return n > 0 && sum / n > 0.85;
+    } catch { return false; }
+  }
+
+  // solid background? (all four corners the same opaque color)
+  async function findBackground(dataURL) {
+    try {
+      const c = await toCanvas(dataURL);
+      const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data;
+      const px = (x, y) => { const i = (y * c.width + x) * 4; return [d[i], d[i + 1], d[i + 2], d[i + 3]]; };
+      const m = 2, W = c.width - 1 - m, H = c.height - 1 - m;
+      const corners = [px(m, m), px(W, m), px(m, H), px(W, H)];
+      if (corners.some((p) => p[3] < 250)) return null;
+      const bg = [0, 1, 2].map((k) => corners.reduce((s, p) => s + p[k], 0) / 4);
+      const same = corners.every((p) => [0, 1, 2].every((k) => Math.abs(p[k] - bg[k]) < 18));
+      return same ? bg : null;
+    } catch { return null; }
+  }
+
+  // turn the background color transparent, keeping soft edges
+  async function knockout(dataURL, bg) {
+    const c = await toCanvas(dataURL);
+    const ctx = c.getContext("2d");
+    const img = ctx.getImageData(0, 0, c.width, c.height);
+    const d = img.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const dist = Math.max(Math.abs(d[i] - bg[0]), Math.abs(d[i + 1] - bg[1]), Math.abs(d[i + 2] - bg[2]));
+      const a = Math.max(0, Math.min(1, (dist - 28) / 150));
+      if (a > 0) for (let k = 0; k < 3; k++) d[i + k] = Math.max(0, Math.min(255, (d[i + k] - bg[k] * (1 - a)) / a));
+      d[i + 3] = Math.round(a * d[i + 3]);
+    }
+    ctx.putImageData(img, 0, 0);
+    return c.toDataURL("image/png");
+  }
+
+  // crop away fully transparent edges so the design fills its print area
+  async function trim(dataURL) {
+    const c = await toCanvas(dataURL);
+    const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data;
+    let x0 = c.width, y0 = c.height, x1 = -1, y1 = -1;
+    for (let y = 0; y < c.height; y++) for (let x = 0; x < c.width; x++) {
+      if (d[(y * c.width + x) * 4 + 3] > 10) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    }
+    if (x1 < 0 || (x0 <= 1 && y0 <= 1 && x1 >= c.width - 2 && y1 >= c.height - 2)) return dataURL;
+    const pad = 4;
+    x0 = Math.max(0, x0 - pad); y0 = Math.max(0, y0 - pad);
+    x1 = Math.min(c.width - 1, x1 + pad); y1 = Math.min(c.height - 1, y1 + pad);
+    const out = document.createElement("canvas");
+    out.width = x1 - x0 + 1; out.height = y1 - y0 + 1;
+    out.getContext("2d").drawImage(c, x0, y0, out.width, out.height, 0, 0, out.width, out.height);
+    return out.toDataURL("image/png");
+  }
+
+  async function applyKnockout() {
+    state.image = state.knockout && state.bg ? await trim(await knockout(state.original, state.bg)) : state.original;
+    state.lightImage = "";
+    $("#file-thumb").src = state.image;
+    await setInvert(state.invert);
+  }
+
+  async function setInvert(on) {
+    state.invert = on;
+    $("#p-invert").checked = on;
+    if (on && state.image && !state.lightImage) {
+      try { state.lightImage = await makeDark(state.image); } catch { state.lightImage = ""; }
+    }
+    draw(false);
+  }
+
+  const designValue = () => (state.invert && state.lightImage ? { dark: state.image, light: state.lightImage } : state.image);
+
   async function handleFile(file) {
     const err = $("#file-error");
     err.textContent = "";
@@ -60,8 +165,16 @@
     }
     let data = await readAsDataURL(file);
     if (file.type !== "image/svg+xml") data = await downscale(data, file.type);
-    state.image = data;
+    state.original = data;
     state.fileName = file.name;
+    state.bg = file.type === "image/svg+xml" ? null : await findBackground(data);
+    state.knockout = !!state.bg;
+    $("#knockout-row").hidden = !state.bg;
+    $("#p-knockout").checked = state.knockout;
+    state.image = state.knockout ? await knockout(data, state.bg) : data;
+    if (file.type !== "image/svg+xml") state.image = await trim(state.image);
+    state.lightImage = "";
+    await setInvert(await isMostlyLight(state.image));
     if (!$("#p-name").value) {
       const base = file.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim();
       $("#p-name").value = (base.charAt(0).toUpperCase() + base.slice(1)).slice(0, 28) + " " + HD.types[state.type].label;
@@ -87,7 +200,7 @@
     box.innerHTML = HD.mockup({
       type: state.type,
       color: state.previewColor,
-      design: state.image,
+      design: designValue(),
       placement: state.placement,
       view: state.view,
       guide: !state.image || dragging,
@@ -165,7 +278,8 @@
   }
 
   function resetForm() {
-    Object.assign(state, { image: "", fileName: "", editingId: null, priceTouched: false, colors: ["black"], previewColor: "black" });
+    $("#knockout-row").hidden = true;
+    Object.assign(state, { image: "", original: "", bg: null, knockout: false, lightImage: "", invert: false, fileName: "", editingId: null, priceTouched: false, colors: ["black"], previewColor: "black" });
     $("#studio-form").reset();
     $("#file").value = "";
     $("#save").textContent = "Add to shop";
@@ -201,13 +315,20 @@
     const p = await HD.store.get(id);
     if (!p) return;
     Object.assign(state, {
-      image: p.design, fileName: p.name, editingId: p.id, priceTouched: true,
+      image: typeof p.design === "object" ? p.design.dark : p.design,
+      lightImage: typeof p.design === "object" ? p.design.light : "",
+      invert: typeof p.design === "object",
+      fileName: p.name, editingId: p.id, priceTouched: true,
+      bg: null, knockout: false,
       colors: [...p.colors], previewColor: p.colors[0], placement: { ...p.placement },
     });
     $("#p-name").value = p.name;
     $("#p-price").value = p.price;
     $("#p-desc").value = p.description || "";
     $("#save").textContent = "Save changes";
+    $("#p-invert").checked = state.invert;
+    state.original = state.image;
+    $("#knockout-row").hidden = true;
     renderColors();
     setType(p.type, true);
     showFile();
@@ -256,7 +377,8 @@
     ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("is-over"); }));
     drop.addEventListener("drop", (e) => handleFile(e.dataTransfer.files[0]));
     $("#file-clear").addEventListener("click", () => {
-      state.image = ""; state.fileName = ""; $("#file").value = "";
+      state.image = ""; state.original = ""; state.bg = null; state.lightImage = ""; state.fileName = ""; $("#file").value = "";
+      $("#knockout-row").hidden = true;
       showFile(); draw(true);
     });
 
@@ -296,6 +418,8 @@
     }));
 
     $("#p-price").addEventListener("input", () => (state.priceTouched = true));
+    $("#p-invert").addEventListener("change", (e) => setInvert(e.target.checked));
+    $("#p-knockout").addEventListener("change", (e) => { state.knockout = e.target.checked; applyKnockout(); });
     $("#download").addEventListener("click", downloadPNG);
 
     // save
@@ -314,7 +438,7 @@
         id: state.editingId || "u-" + Date.now().toString(36),
         name, price, type: state.type,
         colors: [...state.colors],
-        design: state.image,
+        design: designValue(),
         placement: { ...state.placement },
         description: $("#p-desc").value.trim(),
         created: old ? old.created : Date.now(),

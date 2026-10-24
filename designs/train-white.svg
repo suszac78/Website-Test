@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 160">
+<g fill="#ffffff" font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" text-anchor="middle">
+<text x="150" y="40" font-size="20" letter-spacing="10">TRAIN FROM</text>
+<text x="150" y="100" font-size="50" font-style="italic" letter-spacing="-1">DAWN TILL DARK</text>
+<text x="150" y="140" font-size="14" letter-spacing="6">05:00 ——— 22:00</text></g>
+<rect x="60" y="112" width="180" height="5" fill="#ff5a1f"/>
+</svg>

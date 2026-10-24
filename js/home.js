@@ -6,20 +6,20 @@
   document.addEventListener("DOMContentLoaded", async () => {
     // hero pieces
     const hero = {
-      hoodie: HD.products.find((p) => p.id === "wave-hoodie"),
-      tee: HD.products.find((p) => p.id === "wordmark-tee"),
-      pants: HD.products.find((p) => p.id === "drop-joggers"),
+      hoodie: HD.products.find((p) => p.id === "core-hoodie"),
+      tee: HD.products.find((p) => p.id === "dtd-tee"),
+      pants: HD.products.find((p) => p.id === "track-pants"),
     };
     const wrap = (svg) => `<div class="hp-par"><div class="hp-float">${svg}</div></div>`;
-    $(".hero__piece--hoodie").innerHTML = wrap(HD.productMockup(hero.hoodie, "navy"));
-    $(".hero__piece--tee").innerHTML = wrap(HD.productMockup(hero.tee, "bone"));
-    $(".hero__piece--pants").innerHTML = wrap(HD.productMockup(hero.pants, "black"));
+    $(".hero__piece--hoodie").innerHTML = wrap(HD.productMockup(hero.hoodie, "black"));
+    $(".hero__piece--tee").innerHTML = wrap(HD.productMockup(hero.tee, "white"));
+    $(".hero__piece--pants").innerHTML = wrap(HD.productMockup(hero.pants, "charcoal"));
 
     // categories
     const cats = [
-      { type: "hoodie", product: hero.hoodie, color: "black" },
-      { type: "tee", product: HD.products.find((p) => p.id === "ripple-tee"), color: "glacier" },
-      { type: "pants", product: HD.products.find((p) => p.id === "wave-joggers"), color: "bone" },
+      { type: "hoodie", product: HD.products.find((p) => p.id === "sunrise-hoodie"), color: "black" },
+      { type: "tee", product: HD.products.find((p) => p.id === "logo-tee"), color: "dawn" },
+      { type: "pants", product: HD.products.find((p) => p.id === "track-pants"), color: "black" },
     ];
     $("#cats").innerHTML = cats.map(({ type, product, color }) => {
       const from = Math.min(...HD.products.filter((p) => p.type === type).map((p) => p.price));
@@ -40,7 +40,7 @@
 
     // studio teaser: same design on all three pieces
     $("#teaser-media").innerHTML = ["hoodie", "tee", "pants"].map((type, i) =>
-      `<div class="teaser__piece">${HD.mockup({ type, color: ["ember", "black", "heather"][i], design: "designs/drop.svg", placement: type === "pants" ? {} : { scale: 0.6 } })}</div>`
+      `<div class="teaser__piece">${HD.mockup({ type, color: ["dawn", "black", "charcoal"][i], design: { dark: "designs/d2d-logo-white.png", light: "designs/d2d-logo-black.png" }, placement: type === "pants" ? {} : { scale: 0.9, y: -0.1 } })}</div>`
     ).join("");
 
     if (!gsap || HD.reduceMotion) return;

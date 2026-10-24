@@ -93,6 +93,8 @@ window.HD = window.HD || {};
     const hex = color.startsWith("#") ? color : (HD.colors[color] || HD.colors.black).hex;
     const dark = luminance(hex) < 0.18;
     const line = dark ? "#ffffff" : "#000000";
+    // design can be one image, or { dark, light } versions picked by fabric shade
+    if (design && typeof design === "object") design = (luminance(hex) < 0.3 ? design.dark : design.light) || design.dark || design.light || "";
     const p = g.print;
     const s = placement.scale ?? 1;
     const w = p.w * s, h = p.h * s;

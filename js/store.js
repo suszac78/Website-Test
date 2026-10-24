@@ -35,12 +35,19 @@ window.HD = window.HD || {};
   };
 
   /* Built-in catalog + Studio products (Studio ones first, marked as "Yours") */
+  // keep saved products working if color names change
+  const clean = (p) => {
+    if (!p) return p;
+    const colors = (p.colors || []).filter((c) => HD.colors[c]);
+    return { ...p, colors: colors.length ? colors : ["black"] };
+  };
+
   HD.allProducts = async function () {
-    const mine = await HD.store.all();
+    const mine = (await HD.store.all()).map(clean);
     return [...mine.map((p) => ({ ...p, mine: true })), ...HD.products];
   };
 
   HD.findProduct = async function (id) {
-    return HD.products.find((p) => p.id === id) || (await HD.store.get(id));
+    return HD.products.find((p) => p.id === id) || clean(await HD.store.get(id));
   };
 })();

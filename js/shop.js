@@ -26,7 +26,7 @@
       const label = type === "all" ? "Shop all" : HD.types[type].plural;
       $("#shop-title").textContent = label;
       $("#crumb-current").textContent = label;
-      document.title = `${label} — HydrateDifferent`;
+      document.title = `${label} — D2D Dawn Till Dark`;
       $("#shop-sub").textContent = type === "all" ? "Every piece in Collection 01." : `${list.length} ${list.length === 1 ? "piece" : "pieces"} in ${HD.types[type].plural.toLowerCase()}.`;
       $$(".chip").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.type === type)));
       $("#result-count").textContent = `${list.length} products`;

@@ -3,22 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Studio — HydrateDifferent</title>
-  <meta name="description" content="Upload your designs and see them on HydrateDifferent hoodies, tees and pants." />
-  <meta name="theme-color" content="#06121f" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 4C22 22 14 32 14 42a18 18 0 0 0 36 0C50 32 42 22 32 4z' fill='%235ef2d6'/%3E%3C/svg%3E" />
+  <title>Studio — D2D Dawn Till Dark</title>
+  <meta name="description" content="Upload your designs and see them on D2D hoodies, tees and pants." />
+  <meta name="theme-color" content="#0a0a0b" />
+  <link rel="icon" href="assets/favicon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800;1,900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body data-page="studio">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="nav">
-    <a href="index.html" class="nav__logo" aria-label="HydrateDifferent home">
-      <svg viewBox="0 0 64 64" width="24" height="24" aria-hidden="true"><path d="M32 4C22 22 14 32 14 42a18 18 0 0 0 36 0C50 32 42 22 32 4z" fill="currentColor"/></svg>
-      <span>Hydrate<b>Different</b></span>
+    <a href="index.html" class="nav__logo" aria-label="D2D Dawn Till Dark, home">
+      <img src="assets/d2d-mark.png" alt="" width="124" height="25" />
     </a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
     <nav class="nav__menu" id="menu" aria-label="Primary">
@@ -67,6 +66,14 @@
               <button type="button" class="link-btn" id="file-clear">Remove</button>
             </div>
             <p class="field__error" id="file-error" role="alert"></p>
+            <label class="check" id="knockout-row" hidden>
+              <input type="checkbox" id="p-knockout" checked />
+              <span>Remove the background<small>Your file has a solid background. We cut it out so only the design prints.</small></span>
+            </label>
+            <label class="check">
+              <input type="checkbox" id="p-invert" />
+              <span>Use a black version on light colors<small>For white logos, so they stay visible on white or sand fabric.</small></span>
+            </label>
           </div>
 
           <div class="step">
@@ -93,8 +100,8 @@
 
           <div class="step">
             <h2 class="step__title"><span>5</span>Details</h2>
-            <label class="field"><span>Product name</span><input type="text" id="p-name" maxlength="40" placeholder="e.g. Sunset Hoodie" required /></label>
-            <label class="field"><span>Price (USD)</span><input type="number" id="p-price" min="1" max="999" step="1" value="72" required /></label>
+            <label class="field"><span>Product name</span><input type="text" id="p-name" maxlength="40" placeholder="e.g. Night Run Hoodie" required /></label>
+            <label class="field"><span>Price (USD)</span><input type="number" id="p-price" min="1" max="999" step="1" value="75" required /></label>
             <label class="field"><span>Description <small>optional</small></span><textarea id="p-desc" rows="3" maxlength="240" placeholder="A line or two about the design."></textarea></label>
             <p class="field__error" id="form-error" role="alert"></p>
           </div>
@@ -113,8 +120,8 @@
   <footer class="footer">
     <div class="container footer__grid">
       <div>
-        <a href="index.html" class="nav__logo"><span>Hydrate<b>Different</b></span></a>
-        <p class="footer__note">Clothes that make a splash. Online checkout opening soon.</p>
+        <a href="index.html" class="footer__logo" aria-label="D2D Dawn Till Dark, home"><img src="designs/d2d-logo-white.png" alt="" width="180" height="52" /></a>
+        <p class="footer__note">Training wear for early starts and late finishes. Online checkout opening soon.</p>
       </div>
       <nav aria-label="Footer">
         <h3>Shop</h3>
@@ -125,7 +132,7 @@
           <li><a href="studio.html">Studio</a></li>
         </ul>
       </nav>
-      <p class="footer__copy">© <span id="year"></span> HydrateDifferent</p>
+      <p class="footer__copy">© <span id="year"></span> D2D — Dawn Till Dark</p>
     </div>
   </footer>
 

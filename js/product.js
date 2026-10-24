@@ -23,7 +23,7 @@
     let view = "full";
     const type = HD.types[p.type];
 
-    document.title = `${p.name} — HydrateDifferent`;
+    document.title = `${p.name} — D2D Dawn Till Dark`;
     $("#crumb-type").textContent = type.plural;
     $("#crumb-type").href = `shop.html?type=${p.type}`;
     $("#crumb-name").textContent = p.name;
