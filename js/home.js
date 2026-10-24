@@ -29,7 +29,7 @@
       </a>`;
     }).join("");
 
-    // featured (your Studio designs show up here too)
+    // featured
     const all = await HD.allProducts();
     const featured = all.slice(0, 4);
     const grid = $("#featured");
@@ -37,11 +37,6 @@
     HD.bindCards(grid, featured);
     HD.tilt($("#cats"));
     HD.reveal();
-
-    // studio teaser: same design on all three pieces
-    $("#teaser-media").innerHTML = ["hoodie", "tee", "pants"].map((type, i) =>
-      `<div class="teaser__piece">${HD.mockup({ type, color: ["dawn", "black", "charcoal"][i], design: { dark: "designs/d2d-logo-white.png", light: "designs/d2d-logo-black.png" }, placement: type === "pants" ? {} : { scale: 0.9, y: -0.1 } })}</div>`
-    ).join("");
 
     if (!gsap || HD.reduceMotion) return;
 

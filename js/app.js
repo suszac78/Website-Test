@@ -131,12 +131,12 @@ window.HD = window.HD || {};
   /* ---------- product card ---------- */
   HD.card = function (p) {
     const colors = p.colors.map((c) => HD.colors[c] || { name: c, hex: c });
-    const tag = p.mine ? "Your design" : p.tag;
+    const tag = p.tag;
     return `<article class="card reveal" data-type="${p.type}">
   <a class="card__link" href="product.html?id=${encodeURIComponent(p.id)}" data-cursor="View" aria-label="${HD.esc(p.name)}, ${HD.money(p.price)}">
     <div class="card__media" data-tilt>
       <div class="tilt-inner">${HD.productMockup(p, p.colors[0])}</div>
-      ${tag ? `<span class="tag${p.mine ? " tag--mine" : ""}">${HD.esc(tag)}</span>` : ""}
+      ${tag ? `<span class="tag">${HD.esc(tag)}</span>` : ""}
     </div>
     <div class="card__info">
       <div>

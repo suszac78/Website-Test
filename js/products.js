@@ -84,3 +84,6 @@ HD.products = [
 ];
 
 HD.money = (n) => "$" + Number(n).toFixed(0);
+
+HD.allProducts = async () => HD.products;
+HD.findProduct = async (id) => HD.products.find((p) => p.id === id);

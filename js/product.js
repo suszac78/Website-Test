@@ -27,7 +27,7 @@
     $("#crumb-type").textContent = type.plural;
     $("#crumb-type").href = `shop.html?type=${p.type}`;
     $("#crumb-name").textContent = p.name;
-    $("#pdp-type").textContent = type.label + (p.mine ? " · Your design" : "");
+    $("#pdp-type").textContent = type.label;
     $("#pdp-name").textContent = p.name;
     $("#pdp-price").textContent = HD.money(p.price);
     $("#pdp-desc").textContent = p.description || `Your design on our ${type.label.toLowerCase()}.`;

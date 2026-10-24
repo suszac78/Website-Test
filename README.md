@@ -10,7 +10,6 @@ There's no cart or checkout yet. Product pages show "Checkout opens soon".
 | `index.html` | Home page: hero, categories, new arrivals, newsletter signup |
 | `shop.html` | All products, with filters (Hoodies / T-shirts / Pants) and sorting |
 | `product.html?id=…` | A page for each product: colors, sizes, size guide, fabric and care |
-| `studio.html` | Upload your designs, place them on a garment, add them to the shop |
 
 ## Run it
 
@@ -22,21 +21,7 @@ No build step and nothing to install.
 
 Animations load GSAP from a CDN, so you need internet for those. The shop still works without them.
 
-## Uploading your designs (Studio)
-
-1. Open **Studio** in the menu.
-2. Upload your design. A transparent PNG is best, but a logo on a solid black or white background works too: the Studio removes the background for you.
-   If your design is white, it automatically makes a black version for light fabrics (you can turn that off).
-3. Pick the piece (hoodie, t-shirt or pants) and one or more colors.
-4. Use the sliders, or drag the design on the preview, to place it.
-5. Name it, set a price, and click **Add to shop**.
-
-It shows up straight away on the home page, in the shop, and on its own product page.
-You can also click **Download mockup** to save a PNG image of the preview.
-
-**Important:** designs added in the Studio are saved **in your browser only**. Other visitors won't see them.
-
-### Publishing your designs for everyone
+## Adding a new product
 
 1. Put the image file in the `designs/` folder, e.g. `designs/sunset.png`.
 2. Open `js/products.js` and add an entry to `HD.products`, copying one of the existing ones:
@@ -53,7 +38,7 @@ You can also click **Download mockup** to save a PNG image of the preview.
 - `colors` can use `black`, `charcoal`, `white`, `sand`, `dawn`, `navy`, `olive`
 - `design` can also be `{ dark: "designs/logo-white.png", light: "designs/logo-black.png" }`
   to use a white version on dark fabrics and a black version on light fabrics
-- `placement` takes the numbers from the Studio sliders (size, left/right, up/down)
+- `placement`: `scale` is the size (1 fills the print area), `x` / `y` nudge it left/right and up/down
 
 ## Built with
 
