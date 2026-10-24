@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shop — HydrateDifferent</title>
+  <meta name="description" content="Shop HydrateDifferent hoodies, t-shirts and pants." />
+  <meta name="theme-color" content="#06121f" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 4C22 22 14 32 14 42a18 18 0 0 0 36 0C50 32 42 22 32 4z' fill='%235ef2d6'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="shop">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <a href="index.html" class="nav__logo" aria-label="HydrateDifferent home">
+      <svg viewBox="0 0 64 64" width="24" height="24" aria-hidden="true"><path d="M32 4C22 22 14 32 14 42a18 18 0 0 0 36 0C50 32 42 22 32 4z" fill="currentColor"/></svg>
+      <span>Hydrate<b>Different</b></span>
+    </a>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
+    <nav class="nav__menu" id="menu" aria-label="Primary">
+      <ul class="nav__links">
+        <li><a href="shop.html" data-page="shop">Shop all</a></li>
+        <li><a href="shop.html?type=hoodie">Hoodies</a></li>
+        <li><a href="shop.html?type=tee">T-shirts</a></li>
+        <li><a href="shop.html?type=pants">Pants</a></li>
+        <li><a href="studio.html" data-page="studio">Studio</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main" class="page">
+    <section class="container">
+      <div class="page__head">
+        <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><span id="crumb-current">Shop all</span></nav>
+        <h1 id="shop-title" class="page__title">Shop all</h1>
+        <p class="page__sub" id="shop-sub">Every piece in Collection 01.</p>
+      </div>
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="Filter by category">
+          <button type="button" class="chip" data-type="all">All <span></span></button>
+          <button type="button" class="chip" data-type="hoodie">Hoodies <span></span></button>
+          <button type="button" class="chip" data-type="tee">T-shirts <span></span></button>
+          <button type="button" class="chip" data-type="pants">Pants <span></span></button>
+        </div>
+        <label class="sort">
+          <span>Sort</span>
+          <select id="sort">
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: low to high</option>
+            <option value="price-desc">Price: high to low</option>
+            <option value="name">Name</option>
+          </select>
+        </label>
+      </div>
+      <p class="sr-only" id="result-count" role="status" aria-live="polite"></p>
+      <div class="grid grid--shop" id="grid"></div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <a href="index.html" class="nav__logo"><span>Hydrate<b>Different</b></span></a>
+        <p class="footer__note">Clothes that make a splash. Online checkout opening soon.</p>
+      </div>
+      <nav aria-label="Footer">
+        <h3>Shop</h3>
+        <ul>
+          <li><a href="shop.html?type=hoodie">Hoodies</a></li>
+          <li><a href="shop.html?type=tee">T-shirts</a></li>
+          <li><a href="shop.html?type=pants">Pants</a></li>
+          <li><a href="studio.html">Studio</a></li>
+        </ul>
+      </nav>
+      <p class="footer__copy">© <span id="year"></span> HydrateDifferent</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/mockups.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/shop.js"></script>
+</body>
+</html>
